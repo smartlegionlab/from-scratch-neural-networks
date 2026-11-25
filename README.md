@@ -40,12 +40,12 @@ The apps are designed as an educational demonstration: they show, in real time, 
 
 ## Applications
 
-| # | File (repo)                                                                              | Live demo                                                                                      | App                                          | Network        | Learns                       |
-|---|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|----------------------------------------------|----------------|------------------------------|
-| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/examples/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1      | XOR / AND / OR / NAND / XNOR |
-| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/examples/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10  | Handwritten digits 0–9       |
-| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/examples/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
-| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/examples/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
+| # | File (repo)                                                                              | Live demo                                                                                        | App                                          | Network        | Learns                       |
+|---|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------|----------------|------------------------------|
+| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interctive/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1      | XOR / AND / OR / NAND / XNOR |
+| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interctive/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10  | Handwritten digits 0–9       |
+| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interctive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
+| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interctive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
 
 ---
 
@@ -76,7 +76,7 @@ Every application is a single HTML file that runs entirely in the browser - **a 
 
 No build step, no package manager, and no internet connection is required - everything runs 100% client-side.
 
-The published demos for this project currently live under the `examples/` path, with an index of all demonstrations at [examples/index.html](https://smartlegionlab.github.io/examples.html).
+The published demos for this project currently live under the `interctive/` path, with an index of all demonstrations at [interctive/index.html](https://smartlegionlab.github.io/interactive.html).
 
 ---
 
