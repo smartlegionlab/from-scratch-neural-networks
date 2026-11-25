@@ -14,7 +14,6 @@
 ![SGD / Adam](https://img.shields.io/badge/optimizers-SGD%20%2F%20Adam-ff7043)
 ![Live Visualization](https://img.shields.io/badge/live%20visualization-orbs%20%2B%20graphs-b388ff)
 ![Model Export](https://img.shields.io/badge/model-export%20%2F%20import-00c853)
-[![Demo list](https://img.shields.io/badge/demo%20list-smartlegionlab.github.io%2Fai%2Fai-list-29b6f6)](https://smartlegionlab.github.io/examples.html)
 
 A collection of real multilayer perceptrons (MLPs) implemented **from scratch in pure JavaScript**. No frameworks, no external libraries, no runtime dependencies. Each app is a self-contained single HTML file that trains and runs a neural network entirely in the browser, with live visualization of the learning process.
 
