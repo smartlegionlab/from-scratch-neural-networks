@@ -15,15 +15,17 @@
 ![Live Visualization](https://img.shields.io/badge/live%20visualization-orbs%20%2B%20graphs-b388ff)
 ![Model Export](https://img.shields.io/badge/model-export%20%2F%20import-00c853)
 
-A collection of real multilayer perceptrons (MLPs) implemented **from scratch in pure JavaScript**. No frameworks, no external libraries, no runtime dependencies. Each app is a self-contained single HTML file that trains and runs a neural network entirely in the browser, with live visualization of the learning process.
+A collection of real multilayer perceptrons (MLPs) implemented **from scratch in pure JavaScript**. No frameworks, no external libraries, no runtime dependencies. Each app trains and runs a neural network entirely in the browser, with live visualization of the learning process.
 
 ---
 
 ## Overview
 
-This repository contains four independent, ready-to-run applications. Each one implements a complete training pipeline by hand: the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side, so no server or build step is required.
+This repository contains four independent, ready-to-run applications. Each one implements a complete training pipeline by hand: the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side, so no build step is required.
 
 The apps are designed as an educational demonstration: they show, in real time, how a small network reorganizes its weights to solve a specific problem. All values rendered on screen correspond to the actual state of the network.
+
+The entry point for all applications is the **`index.html`** gallery page.
 
 ---
 
@@ -40,16 +42,18 @@ The apps are designed as an educational demonstration: they show, in real time, 
 
 ## Applications
 
-| # | File (repo)                                                                              | Live demo                                                                                        | App                                          | Network        | Learns                       |
-|---|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------|----------------|------------------------------|
-| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interctive/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1      | XOR / AND / OR / NAND / XNOR |
-| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interctive/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10  | Handwritten digits 0–9       |
-| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interctive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
-| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interctive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
+| # | File (repo)                                                                              | Live demo                                                                                           | App                                          | Network        | Learns                       |
+|---|------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------|----------------|------------------------------|
+| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interactive/logic-gates-neural-network.html)              | Boolean-Logic Neural Network                 | 2 → 3 → 1      | XOR / AND / OR / NAND / XNOR |
+| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/digit-recognition-neural-network.html)        | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10  | Handwritten digits 0–9       |
+| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)          | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
+| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html)   | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
 
 ---
 
 ## Screenshots
+
+![Main Page](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/index.png)
 
 ![Handwritten-Digit Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/digit-recognition-neural-network.png)
 
@@ -63,20 +67,19 @@ The apps are designed as an educational demonstration: they show, in real time, 
 
 ## Getting started
 
-### Run locally
+### Run with a local server
 
-Every application is a single HTML file that runs entirely in the browser - **a web server is not required**.
+The applications are **no longer single-file**. Each app is split into an HTML file, a stylesheet (`css/`) and a script (`js/`), and the gallery page (`index.html`) loads screenshots from `data/images/`. Because of this, **opening the HTML files directly by double-click will not work** - you must serve the folder over HTTP:
 
-- **Double-click:** open the downloaded HTML file directly in any modern browser.
-- **Static server (optional):** if you prefer, serve the folder, for example:
-  ```bash
-  python -m http.server 8000
-  ```
-  then open `http://localhost:8000` in a browser and pick the HTML file.
+```bash
+python -m http.server 8000
+```
 
-No build step, no package manager, and no internet connection is required - everything runs 100% client-side.
+then open [http://localhost:8000](http://localhost:8000) and pick `index.html` (or one of the application pages).
 
-The published demos for this project currently live under the `interctive/` path, with an index of all demonstrations at [interctive/index.html](https://smartlegionlab.github.io/interactive.html).
+Any static server works, for example `npx serve`, or a GitHub Pages deployment. No build step, no package manager, and no internet connection is required - everything runs 100% client-side once served.
+
+The published demos for this project live under the `interactive/` path, with an index of all demonstrations at [interactive/index.html](https://smartlegionlab.github.io/interactive/index.html).
 
 ---
 

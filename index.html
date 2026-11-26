@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Networks from Scratch · Smart Legion Lab</title>
+    <meta name="description" content="A collection of real multilayer perceptrons (MLPs) implemented from scratch in pure JavaScript. Educational demos with live visualization, model export and import.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-head">
+    <h1 class="site-title">Neural Networks <span class="hi">from Scratch</span></h1>
+    <p class="site-sub">Real multilayer perceptrons implemented in pure JavaScript - no frameworks, no libraries.
+        Train, watch the learning live, and export or import trained brains as JSON.</p>
+    <div class="head-meta">
+        <a href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener" class="btn btn-ghost">
+            <span class="ico">G</span> Repository
+        </a>
+    </div>
+</header>
+<main class="grid">
+
+    <article class="card">
+        <span class="card-badge">Neural Network</span>
+        <h2 class="card-title">Boolean-Logic Neural Network</h2>
+        <p class="card-meta">2 → 3 → 1 · learns XOR / AND / OR / NAND / XNOR</p>
+        <div class="thumb"><img src="data/images/logic-gates-neural-network.png" alt="Boolean-Logic Neural Network"></div>
+        <p class="card-desc">A tiny network that explains why a hidden layer is needed: a single-layer perceptron cannot learn XOR.</p>
+        <div class="card-actions">
+            <a class="btn btn-blue" href="logic-gates-neural-network.html">Try it</a>
+            <a class="btn btn-ghost" href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repo</a>
+        </div>
+    </article>
+
+    <article class="card">
+        <span class="card-badge">Neural Network</span>
+        <h2 class="card-title">Handwritten-Digit Recognition</h2>
+        <p class="card-meta">144 → 24 → 10 · handwritten digits 0-9</p>
+        <div class="thumb"><img src="data/images/digit-recognition-neural-network.png" alt="Handwritten-Digit Recognition Neural Network"></div>
+        <p class="card-desc">Draw digits on a 12×12 grid, add samples or auto-generate hand-style ones, and watch the net learn.</p>
+        <div class="card-actions">
+            <a class="btn btn-blue" href="digit-recognition-neural-network.html">Try it</a>
+            <a class="btn btn-ghost" href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repo</a>
+        </div>
+    </article>
+
+    <article class="card">
+        <span class="card-badge">Neural Network</span>
+        <h2 class="card-title">X / O Shape Recognition</h2>
+        <p class="card-meta">64 → 12 → 2 · the letters X and O</p>
+        <div class="thumb"><img src="data/images/x-o-recognition-neural-network.png" alt="X / O Shape Recognition Neural Network"></div>
+        <p class="card-desc">A minimal dense network that learns to distinguish X and O drawn on an 8×8 grid.</p>
+        <div class="card-actions">
+            <a class="btn btn-blue" href="x-o-recognition-neural-network.html">Try it</a>
+            <a class="btn btn-ghost" href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repo</a>
+        </div>
+    </article>
+
+    <article class="card">
+        <span class="card-badge">Neural Network</span>
+        <h2 class="card-title">Name Gender Classifier</h2>
+        <p class="card-meta">2,746 → 48 → 1 · gender from RU/EN names</p>
+        <div class="thumb"><img src="data/images/name-gender-classifier-neural-network.png" alt="Name Gender Classifier Neural Network"></div>
+        <p class="card-desc">Guesses gender from Russian, English or transliterated names using sparse features and a 27-letter alphabet.</p>
+        <div class="card-actions">
+            <a class="btn btn-blue" href="name-gender-classifier-neural-network.html">Try it</a>
+            <a class="btn btn-ghost" href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repo</a>
+        </div>
+    </article>
+
+</main>
+<footer class="site-foot">
+    <p>&#169; <span id="currentYear">2026</span>
+        <a href="https://github.com/smartlegionlab" target="_blank" rel="noopener">Smart Legion Lab</a> |
+        <a href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repository</a></p>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
