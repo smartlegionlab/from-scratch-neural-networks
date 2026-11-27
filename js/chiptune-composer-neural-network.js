@@ -1,9 +1,19 @@
 var IN = 53, HID = 48, OUT = 12, BREAKPOINT = 1000, RHY = 4;
 var TONIC = 9;
+var MODE = 'minor';
 var NATURAL = [0,2,3,5,7,8,10];
 var HARMONIC = [0,2,3,5,7,8,11];
 var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+var MODE_SCALES = {
+  minor: [0,2,3,5,7,8,10],
+  harmonic: [0,2,3,5,7,8,11],
+  phrygian: [0,1,3,5,7,8,10],
+  dark: [0,2,3,5,6,8,10]
+};
+var MODE_LABELS = { minor:'Minor', harmonic:'Harmonic Minor', phrygian:'Phrygian', dark:'Dark' };
 var KEY_NAMES = {9:'A minor',0:'C minor',2:'D minor',4:'E minor',5:'F minor',7:'G minor'};
+function keyLabel(){ return NOTE_NAMES[TONIC % 12] + ' ' + MODE_LABELS[MODE]; }
+function chordOf(name){ return CHORDS[name] || CHORDS.i; }
 var PROGRESSIONS = [
   ['i','ii','V7','i'],['i','VI','ii','V7'],['i','iv','V7','i'],
   ['i','VI','iv','V7'],['i','III','iv','V7'],['VI','iv','ii','V7']
@@ -21,9 +31,12 @@ var GROOVES = [
   { b:[1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0], k:[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0], s:[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0], h:[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0] }
 ];
 function pcAbs(rel){ return (TONIC + rel) % 12; }
-function chordAbs(name){ return CHORDS[name].rel.map(pcAbs); }
-function chordRootAbs(name){ return pcAbs(CHORDS[name].rel[0]); }
-function scalePcs(id){ var rel = id === 1 ? HARMONIC : NATURAL; return rel.map(function(r){ return (TONIC + r) % 12; }); }
+function chordAbs(name){ return chordOf(name).rel.map(pcAbs); }
+function chordRootAbs(name){ return pcAbs(chordOf(name).rel[0]); }
+function scalePcs(id){
+  var set = MODE === 'minor' ? (id === 1 ? HARMONIC : NATURAL) : MODE_SCALES[MODE];
+  return set.map(function(r){ return (TONIC + r) % 12; });
+}
 function minDist(a,b){ var d = Math.abs(((a - b) % 12 + 12) % 12); return d > 6 ? 6 - d : d; }
 function argmax(arr){ var b=0; for(var i=1;i<arr.length;i++) if(arr[i]>arr[b]) b=i; return b; }
 function clmp(x){ return Math.max(-1, Math.min(1, x)); }
@@ -180,7 +193,7 @@ function genData(){
       dataset.push({x:buildFeatures(last, prev, st.root, st.q, st.step, st.s, st.chord), t:st.target, tr:grooveForBar[bar]});
     }
   }
-  log('genData key='+TONIC+' ('+(KEY_NAMES[TONIC]||'?')+') dataset='+dataset.length);
+  log('genData '+keyLabel()+' dataset='+dataset.length);
 }
 function scoreDist(last, root, scaleId, stepInBar, chord){
   var sc = scalePcs(scaleId), phrasePos = stepInBar%8, isAns = stepInBar>=8, nearEnd = phrasePos>=6;
@@ -273,17 +286,32 @@ function updateStats(){
   var sm=smoothedLoss===null?'-':smoothedLoss.toFixed(3), ap=accCache===null?'-':Math.round(accCache*100)+'%';
   document.getElementById('trainStats').textContent='Epoch: '+epoch+' | Loss: '+sm+' | Top3: '+ap;
   document.getElementById('lossStats').textContent='Current: '+sm+' | Best: '+(bestLoss===Infinity?'-':bestLoss.toFixed(4));
-  document.getElementById('rawStats').textContent='Epoch='+epoch+' | Loss='+sm+' | Top3='+ap+' | opt='+nn.opt.toUpperCase()+' | lr='+nn.lr+' | key='+TONIC+' | arch=53-48-12+r';
+  document.getElementById('rawStats').textContent='Epoch='+epoch+' | Loss='+sm+' | Top3='+ap+' | opt='+nn.opt.toUpperCase()+' | lr='+nn.lr+' | key='+keyLabel()+' | arch=53-48-12+r';
 }
 function copyStats(){ var txt=document.getElementById('rawStats').textContent; function done(){ showToast('Stats copied'); } function fail(){ window.prompt('Copy stats:',txt); done(); } if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,fail); } else { window.prompt('Copy stats:',txt); done(); } }
 function setKey(pc){
-  TONIC=pc; document.getElementById('keyName').textContent=KEY_NAMES[pc]||('Key '+pc);
-  log('=== KEY CHANGE to '+TONIC+' ('+(KEY_NAMES[pc]||'?')+') ===');
+  TONIC=pc; document.getElementById('keyName').textContent=keyLabel();
+  log('=== KEY CHANGE to '+keyLabel()+' ===');
   genData(); resetTrainingStats();
   for(var e=0;e<150;e++) trainOneEpoch();
   accCache=null; updateStats();
   histPc=[TONIC]; histMidi=[72]; lastLeadPc=TONIC; curLeadPC=-1; curBassPC=-1;
-  showToast('Key changed to '+(KEY_NAMES[pc]||pc)+' - retrained');
+  showToast('Key changed to '+keyLabel()+' - retrained');
+}
+function syncModeUI(){
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===MODE); });
+  var mn=document.getElementById('modeName'); if(mn) mn.textContent=(MODE_LABELS[MODE]||MODE);
+  var kn=document.getElementById('keyName'); if(kn) kn.textContent=keyLabel();
+}
+function setMode(mode, btn){
+  MODE=mode;
+  syncModeUI();
+  log('=== MODE CHANGE to '+(MODE_LABELS[mode]||mode)+' ===');
+  genData(); resetTrainingStats();
+  for(var e=0;e<150;e++) trainOneEpoch();
+  accCache=null; updateStats();
+  histPc=[TONIC]; histMidi=[72]; lastLeadPc=TONIC; curLeadPC=-1; curBassPC=-1;
+  showToast('Mode: '+(MODE_LABELS[mode]||mode)+' - retrained');
 }
 function toggleTrain(){ if(dataset.length===0) genData(); isTraining=!isTraining; document.getElementById('trainBtn').textContent=isTraining?'Pause':'Start Training'; log('training '+(isTraining?'started':'paused')); }
 function trainEpochs(n){ if(dataset.length===0) genData(); for(var e=0;e<n;e++) trainOneEpoch(); isTraining=false; document.getElementById('trainBtn').textContent='Start Training'; accCache=null; showToast('Trained '+n+' epochs'); }
@@ -296,7 +324,7 @@ function setOpt(name,btn){
   else { nn.vWIH.forEach(function(a){a.fill(0);}); nn.vWHO.forEach(function(a){a.fill(0);}); nn.vWRF.forEach(function(a){a.fill(0);}); nn.vBH.fill(0); nn.vBO.fill(0); nn.vBRF.fill(0); }
   showToast('Optimizer: '+name.toUpperCase());
 }
-function exportModel(){ var data={kind:'chiptune-composer',arch:'53-48-12+r',key:TONIC,lr:nn.lr,opt:nn.opt,wIH:nn.wIH,wHO:nn.wHO,wRF:nn.wRF,bH:nn.bH,bO:nn.bO,bRF:nn.bRF}; var blob=new Blob([JSON.stringify(data)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='chiptune-composer-model.json'; a.click(); URL.revokeObjectURL(a.href); showToast('Model exported'); }
+function exportModel(){ var data={kind:'chiptune-composer',arch:'53-48-12+r',key:TONIC,mode:MODE,lr:nn.lr,opt:nn.opt,wIH:nn.wIH,wHO:nn.wHO,wRF:nn.wRF,bH:nn.bH,bO:nn.bO,bRF:nn.bRF}; var blob=new Blob([JSON.stringify(data)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='chiptune-composer-model.json'; a.click(); URL.revokeObjectURL(a.href); showToast('Model exported'); }
 function importModel(){ document.getElementById('modelFile').click(); }
 function onImportFile(e){
   var f=e.target.files[0]; if(!f) return;
@@ -305,6 +333,7 @@ function onImportFile(e){
     try{ var data=JSON.parse(reader.result); if(!Array.isArray(data.wIH)||!Array.isArray(data.wHO)) throw new Error('bad'); if(data.wIH[0].length!==IN||data.wIH.length!==HID) throw new Error('arch');
       isTraining=false; document.getElementById('trainBtn').textContent='Start Training';
       nn.lr=typeof data.lr==='number'?data.lr:nn.lr; nn.opt=(data.opt==='sgd'||data.opt==='adam')?data.opt:nn.opt;
+      if(data.mode && MODE_SCALES[data.mode]){ MODE=data.mode; syncModeUI(); }
       nn.wIH=data.wIH; nn.wHO=data.wHO; nn.bH=Array.isArray(data.bH)?data.bH:nn.bH; nn.bO=Array.isArray(data.bO)?data.bO:nn.bO;
       if(Array.isArray(data.wRF)){ nn.wRF=data.wRF; nn.bRF=Array.isArray(data.bRF)?data.bRF:new Array(RHY).fill(0); }
       nn.t=0; nn.vWIH.forEach(function(a){a.fill(0);}); nn.vWHO.forEach(function(a){a.fill(0);}); nn.vWRF.forEach(function(a){a.fill(0);}); nn.vBH.fill(0); nn.vBO.fill(0); nn.vBRF.fill(0);
@@ -366,7 +395,7 @@ function drawNetwork(){
 function drawLoss(){ var W=lossCanvas.width,H=lossCanvas.height,data=lossHistory; lCtx.clearRect(0,0,W,H); lCtx.strokeStyle='#242424'; lCtx.lineWidth=1; for(var i=1;i<4;i++){ var y=Math.round(H*i/4); lCtx.beginPath(); lCtx.moveTo(0,y); lCtx.lineTo(W,y); lCtx.stroke(); } if(data.length===0){ lCtx.fillStyle='#8a8a8a'; lCtx.font='12px sans-serif'; lCtx.textAlign='center'; lCtx.textBaseline='middle'; lCtx.fillText('Train to see the loss curve',W/2,H/2); return; } var lo=Math.min.apply(null,data),hi=Math.max.apply(null,data),range=hi-lo; if(range<1e-6){ lo=Math.max(0,lo-0.05); hi+=0.05; range=hi-lo; } range=Math.max(range,1e-6); var padL=8,padR=8,padT=18,padB=18,innerW=W-padL-padR,innerH=H-padT-padB; var xFor=function(i){ return padL+(data.length===1?innerW:innerW*i/(data.length-1)); }; var yFor=function(l){ return padT+(1-(l-lo)/range)*innerH; }; lCtx.fillStyle='#9a9a9a'; lCtx.font='10px sans-serif'; lCtx.textAlign='left'; lCtx.textBaseline='top'; lCtx.fillText(hi.toFixed(3),padL,4); lCtx.textBaseline='bottom'; lCtx.fillText(lo.toFixed(3),padL,H-4); lCtx.beginPath(); lCtx.strokeStyle='#00e676'; lCtx.lineWidth=2; data.forEach(function(loss,idx){ var x=xFor(idx),y=yFor(loss); idx===0?lCtx.moveTo(x,y):lCtx.lineTo(x,y); }); lCtx.stroke(); lCtx.fillStyle='#9a9a9a'; lCtx.font='10px sans-serif'; lCtx.textAlign='right'; lCtx.textBaseline='bottom'; lCtx.fillText('epoch '+epoch,W-4,H-4); }
 function drawDistribution(){ if(!dCtx||!distCanvas) return; var W=distCanvas.width,H=distCanvas.height; dCtx.clearRect(0,0,W,H); var out=nn.lastOut, bn=12, gap=3, bw=(W-gap*(bn-1))/bn; for(var i=0;i<bn;i++){ var v=out?out[i]:0, h=Math.max(2,v*(H-16)); dCtx.fillStyle=(i===lastLeadPc)?'#0d6efd':'rgba(13,110,253,0.5)'; dCtx.fillRect(i*(bw+gap),H-14-h,bw,h); dCtx.fillStyle=(i===lastLeadPc)?'#00e676':'#666'; dCtx.font='9px monospace'; dCtx.textAlign='center'; dCtx.textBaseline='alphabetic'; dCtx.fillText(NOTE_NAMES[i],i*(bw+gap)+bw/2,H-2); dCtx.fillStyle='#9a9a9a'; dCtx.fillText(Math.round(v*100)+'%',i*(bw+gap)+bw/2,H-16-h); } }
 var curBarIndex=-1, curProg=[], curChordName='-', curLeadPC=-1, curBassPC=-1, curGroove=0;
-function updateStatus(){ var sk=document.getElementById('sKey'),sb=document.getElementById('sBar'),sc2=document.getElementById('sChord'),sn=document.getElementById('sNotes'); if(!sk) return; sk.textContent=KEY_NAMES[TONIC]||('Key '+TONIC); sb.textContent=(curBarIndex>=0?'#'+curBarIndex:'-')+' | groove '+curGroove+' | '+(curProg.length?curProg.join(','):'-'); sc2.textContent=curChordName||'-'; sn.textContent=(curLeadPC>=0?pcName(curLeadPC):'-')+' / '+(curBassPC>=0?pcName(curBassPC):'-')+' / R'+curGroove; }
+function updateStatus(){ var sk=document.getElementById('sKey'),sb=document.getElementById('sBar'),sc2=document.getElementById('sChord'),sn=document.getElementById('sNotes'); if(!sk) return; sk.textContent=keyLabel(); sb.textContent=(curBarIndex>=0?'#'+curBarIndex:'-')+' | groove '+curGroove+' | '+(curProg.length?curProg.join(','):'-'); sc2.textContent=curChordName||'-'; sn.textContent=(curLeadPC>=0?pcName(curLeadPC):'-')+' / '+(curBassPC>=0?pcName(curBassPC):'-')+' / R'+curGroove; }
 var roll=[], curStep=0, progChoice=['i','ii','V7','i'], histPc=[TONIC], histMidi=[72], lastLeadPc=TONIC;
 function drawTrack(){ var W=trackCanvas.width,H=trackCanvas.height; tCtx.clearRect(0,0,W,H); var cols=16,cw=W/cols,base=57,span=84-base,rowsC=7; tCtx.strokeStyle='rgba(13,110,253,0.15)'; tCtx.lineWidth=1; for(var c=1;c<cols;c++){ tCtx.beginPath(); tCtx.moveTo(c*cw,0); tCtx.lineTo(c*cw,H); tCtx.stroke(); } for(var r=0;r<9;r++){ var yy=H-(H/8)*r; tCtx.beginPath(); tCtx.moveTo(0,yy); tCtx.lineTo(W,yy); tCtx.stroke(); } var n=roll.length; for(var c=0;c<cols;c++){ var stepShowing=curStep-(cols-1-c), idx=-1; for(var i=n-1;i>=0;i--){ if(roll[i].step===stepShowing){ idx=i; break; } } if(idx<0) continue; var it=roll[idx],x=c*cw; function note(midi,color,alpha){ if(midi==null) return; var rf=(midi-base)/span*7, row=Math.max(0,Math.min(rowsC,Math.round(rf))), y=H-(H/8)*(row+1); tCtx.fillStyle=color; tCtx.globalAlpha=alpha; tCtx.fillRect(x+1,y+1,cw-2,H/8-2); tCtx.globalAlpha=1; } if(!mute[0]) note(it.lead,'#0d6efd',0.95); if(!mute[1]) note(it.arp,'#58a6ff',0.7); if(!mute[2]) note(it.bass,'#f0ad4e',0.8); if(!mute[4]) note(it.lead2,'#2ee6a8',0.65); if(!mute[5]) note(it.pad,'#b388ff',0.55); if(!mute[3]&&(it.drum||it.s||it.h)){ tCtx.fillStyle='#ff7b3a'; tCtx.fillRect(x+1,H-8,cw-2,5); } } }
 var actx=null, master, chanLead, chanArp, chanBass, chanDrum, chanLead2, chanPad;
@@ -435,7 +464,7 @@ function scheduleStep(step,t){
     var prevMidi=histMidi.length?histMidi[histMidi.length-1]:72; leadMidi=placeLead(leadPc,prevMidi);
     histPc.push(leadPc); if(histPc.length>40) histPc.shift(); histMidi.push(leadMidi); if(histMidi.length>40) histMidi.shift();
   } else { leadMidi=histMidi.length?histMidi[histMidi.length-1]:72; }
-  if(stepInBar===0){ log('[BAR] '+barIndex+' key='+TONIC+' ('+(KEY_NAMES[TONIC]||'?')+') groove='+curGroove+' prog='+progChoice.join(',')+' | '+progChoice.map(function(nm){ return nm+'('+chordAbs(nm).map(pcName).join(',')+')'; }).join(' | ')); }
+  if(stepInBar===0){ log('[BAR] '+barIndex+' '+keyLabel()+' groove='+curGroove+' prog='+progChoice.join(',')+' | '+progChoice.map(function(nm){ return nm+'('+chordAbs(nm).map(pcName).join(',')+')'; }).join(' | ')); }
   if(!mute[0]) tone('square',freqFromMidi(leadMidi),t,stepDur*0.9,chanLead,0.14);
   if(!mute[4]) tone('square',freqFromMidi(leadMidi-12),t,stepDur*0.9,chanLead2,0.09);
   var grv=GROOVES[curGroove];
@@ -454,7 +483,7 @@ function togglePlay(){
     buildAudio(); if(actx.state==='suspended') actx.resume();
     stepDur=60/(+document.getElementById('bpmSlider').value*4); delayNode.delayTime.value=stepDur*3; setEcho();
     histPc=[TONIC]; histMidi=[72]; lastLeadPc=TONIC; curLeadPC=-1; curBassPC=-1; curGroove=0; bassCount=0; roll=[]; curStep=0; nextTime=actx.currentTime+0.15;
-    playing=true; document.getElementById('playBtn').textContent='Stop'; document.getElementById('playBtn').classList.add('red'); schedulerId=setInterval(tick,25); log('play start');
+    playing=true; document.getElementById('playBtn').textContent='Stop'; document.getElementById('playBtn').classList.add('red'); schedulerId=setInterval(tick,25); log('play start '+keyLabel());
   } else {
     playing=false; clearInterval(schedulerId); document.getElementById('playBtn').textContent='Play'; document.getElementById('playBtn').classList.remove('red'); if(actx&&actx.state==='running') actx.suspend(); log('play stop');
   }
@@ -465,7 +494,7 @@ function closeModal(el){ el.closest('.modal-overlay').classList.remove('open'); 
 document.querySelectorAll('.modal-overlay').forEach(function(o){ o.addEventListener('click',function(e){ if(e.target===o){ o.classList.remove('open'); document.body.style.overflow=''; } }); });
 window.addEventListener('keydown',function(e){ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(function(o){ o.classList.remove('open'); document.body.style.overflow=''; }); });
 function loop(){ anim=performance.now()/1000; if(isTraining) trainOneEpoch(); accTick++; if(accCache===null||accTick%30===0) accCache=computeAcc(); updateStats(); drawNetwork(); drawLoss(); drawDistribution(); updateStatus(); drawTrack(); drawBars(); requestAnimationFrame(loop); }
-function startupTrain(){ genData(); log('init: arch=53-48-12+rhy key='+TONIC+' opt='+nn.opt+' lr='+nn.lr); function step(){ for(var e=0;e<2&&epoch<RUN_EPOCHS;e++) trainOneEpoch(); updateStats(); if(epoch<RUN_EPOCHS) setTimeout(step,0); } setTimeout(step,0); }
+function startupTrain(){ genData(); log('init: arch=53-48-12+rhy '+keyLabel()+' opt='+nn.opt+' lr='+nn.lr); function step(){ for(var e=0;e<2&&epoch<RUN_EPOCHS;e++) trainOneEpoch(); updateStats(); if(epoch<RUN_EPOCHS) setTimeout(step,0); } setTimeout(step,0); }
 updateRecUI();
 startupTrain();
 fitCanvases();
