@@ -14,17 +14,21 @@
 ![Live Visualization](https://img.shields.io/badge/live%20visualization-orbs%20%2B%20graphs-b388ff)
 ![Model Export](https://img.shields.io/badge/model-export%20%2F%20import-00c853)
 
-A collection of real multilayer perceptrons (MLPs) implemented **from scratch in pure JavaScript**. No frameworks, no external libraries, no runtime dependencies. Each app trains and runs a neural network entirely in the browser, with live visualization of the learning process.
+A collection of real multilayer perceptrons (MLPs) implemented **from scratch in pure JavaScript**. No frameworks, no external libraries, no runtime dependencies. This repository is a **gallery**: it hosts the index page and the README of the collection, while each application lives in its own standalone repository listed below.
 
 ---
 
 ## Overview
 
-This repository contains **eight** independent, ready-to-run applications. Each one implements a complete training pipeline by hand: the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side, so no build step is required.
+This is the **collection entry point** for **eight** independent applications. Each one implements a complete training pipeline by hand - the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side in the browser, with live visualization of the learning process.
 
-The apps are designed as an educational demonstration: they show, in real time, how a small network reorganizes its weights to solve a specific problem. All values rendered on screen correspond to the actual state of the network.
+Each app has been split out into its **own repository**, so you can open, star, fork and deploy each one separately:
 
-The entry point for all applications is the `index.html` gallery page.
+- The `index.html` here is the gallery page that links to every app.
+- The live demos are published under the `interactive/` path.
+- A full listing of the collection lives at [interactive.html](https://smartlegionlab.github.io/interactive.html).
+
+All values rendered on screen correspond to the actual state of the network - the apps are an educational demonstration of how a small network reorganizes its weights to solve a specific problem.
 
 ---
 
@@ -46,16 +50,16 @@ The entry point for all applications is the `index.html` gallery page.
 
 ## Applications
 
-| # | File (repo)                                                                              | Live demo                                                                                         | App                                          | Network          | Learns                       |
-|---|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------|------------------|------------------------------|
-| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interactive/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1        | XOR / AND / OR / NAND / XNOR |
-| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10    | Handwritten digits 0-9       |
-| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2      | The letters X and O          |
-| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1   | Gender from RU/EN names      |
-| 5 | [chiptune-composer-neural-network.html](chiptune-composer-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/chiptune-composer-neural-network.html)      | Chiptune Composer Neural Network             | 53 → 48 → 12+r   | Compose 8-bit chiptune live  |
-| 6 | [rgb-color-name-guesser-neural-network.html](rgb-color-name-guesser-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/rgb-color-name-guesser-neural-network.html) | RGB Color Name Guesser Neural Network        | 3 → 24 → 12      | Names any RGB color          |
-| 7 | [morse-decoder-neural-network.html](morse-decoder-neural-network.html)                   | [try it](https://smartlegionlab.github.io/interactive/morse-decoder-neural-network.html)          | Morse Decoder Neural Network                 | 10 → 16 → 36     | Morse code A-Z and 0-9       |
-| 8 | [tic-tac-toe-brain-neural-network.html](tic-tac-toe-brain-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/tic-tac-toe-brain-neural-network.html)      | Tic-Tac-Toe Brain Neural Network             | 27 → 48 → 32 → 9 | Perfect Tic-Tac-Toe play     |
+| # | Project                       | Repository                                                                                                       | Live demo                                                                                         | Network          | Learns                       |
+|---|-------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------|------------------------------|
+| 1 | Boolean-Logic Neural Network  | [logic-gates-neural-network](https://github.com/smartlegionlab/logic-gates-neural-network)                       | [try it](https://smartlegionlab.github.io/interactive/logic-gates-neural-network.html)            | 2 → 3 → 1        | XOR / AND / OR / NAND / XNOR |
+| 2 | Handwritten-Digit Recognition | [digit-recognition-neural-network](https://github.com/smartlegionlab/digit-recognition-neural-network)           | [try it](https://smartlegionlab.github.io/interactive/digit-recognition-neural-network.html)      | 144 → 24 → 10    | Handwritten digits 0-9       |
+| 3 | X / O Shape Recognition       | [x-o-recognition-neural-network](https://github.com/smartlegionlab/x-o-recognition-neural-network)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)        | 64 → 12 → 2      | The letters X and O          |
+| 4 | Name Gender Classifier        | [name-gender-classifier-neural-network](https://github.com/smartlegionlab/name-gender-classifier-neural-network) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html) | 2,746 → 48 → 1   | Gender from RU/EN names      |
+| 5 | Chiptune Composer             | [chiptune-composer-neural-network](https://github.com/smartlegionlab/chiptune-composer-neural-network)           | [try it](https://smartlegionlab.github.io/interactive/chiptune-composer-neural-network.html)      | 53 → 48 → 12+r   | Compose 8-bit chiptune live  |
+| 6 | RGB Color Name Guesser        | [rgb-color-name-guesser-neural-network](https://github.com/smartlegionlab/rgb-color-name-guesser-neural-network) | [try it](https://smartlegionlab.github.io/interactive/rgb-color-name-guesser-neural-network.html) | 3 → 24 → 12      | Names any RGB color          |
+| 7 | Morse Decoder                 | [morse-decoder-neural-network](https://github.com/smartlegionlab/morse-decoder-neural-network)                   | [try it](https://smartlegionlab.github.io/interactive/morse-decoder-neural-network.html)          | 10 → 16 → 36     | Morse code A-Z and 0-9       |
+| 8 | Tic-Tac-Toe Brain             | [tic-tac-toe-brain-neural-network](https://github.com/smartlegionlab/tic-tac-toe-brain-neural-network)           | [try it](https://smartlegionlab.github.io/interactive/tic-tac-toe-brain-neural-network.html)      | 27 → 48 → 32 → 9 | Perfect Tic-Tac-Toe play     |
 
 ---
 
@@ -77,22 +81,21 @@ The entry point for all applications is the `index.html` gallery page.
 
 ### Run with a local server
 
-The applications are **no longer single-file**. Each app is split into an HTML file, a stylesheet (`css/`) and a script (`js/`), and the gallery page `index.html` loads screenshots from `data/images/`. Because of this, **opening the HTML files directly by double-click will not work** - you must serve the folder over HTTP:
+This repository now holds only the **gallery** (the `index.html` page and the screenshots in `data/images/`). Each application lives in its own standalone repository listed above. **Opening the HTML file directly by double-click might not load everything** - to be safe, serve the folder over HTTP:
 
 ```bash
 python -m http.server 8000
 ```
 
-then open [http://localhost:8000](http://localhost:8000) and pick `index.html` (or one of the application pages). Any static server works, for example `npx serve`, or a GitHub Pages deployment. No build step, no package manager, and no internet connection is required - everything runs 100% client-side once served.
+then open [http://localhost:8000](http://localhost:8000) and pick `index.html`. Any static server works, for example `npx serve`, or a GitHub Pages deployment. No build step, no package manager, and no internet connection is required - everything runs 100% client-side once served.
 
-The published demos for this project live under the `interactive/` path, with an index of all demonstrations at [interactive/index.html](https://smartlegionlab.github.io/interactive/index.html).
+The live demos of the collection live under the `interactive/` path, with an index of all demonstrations at [interactive.html](https://smartlegionlab.github.io/interactive.html).
 
 ---
 
 ## Applications in detail
 
-### 1. Boolean-Logic Neural Network - `logic-gates-neural-network.html`
-
+### 1. Boolean-Logic Neural Network - [logic-gates-neural-network](https://github.com/smartlegionlab/logic-gates-neural-network)
 A small **2 → 3 → 1** network that learns classic logic gates. It is a good introduction to why a hidden layer is necessary: a single-layer perceptron cannot learn XOR, because its two "true" inputs sit diagonally and cannot be separated by a straight line.
 
 **How to use:**
@@ -104,8 +107,7 @@ A small **2 → 3 → 1** network that learns classic logic gates. It is a good 
 
 The right-hand panel shows a **decision map**: every pixel of the input space is fed through the network and colored by its output.
 
-### 2. Handwritten-Digit Recognition Neural Network - `digit-recognition-neural-network.html`
-
+### 2. Handwritten-Digit Recognition - [digit-recognition-neural-network](https://github.com/smartlegionlab/digit-recognition-neural-network)
 A **144 → 24 → 10** network (12×12 grayscale input grid → 24 hidden neurons → 10 outputs) that recognizes the digits 0–9. Training uses mini-batch SGD with momentum and exact MSE backpropagation.
 
 **How to use:**
@@ -115,8 +117,7 @@ A **144 → 24 → 10** network (12×12 grayscale input grid → 24 hidden neuro
 4. Press **Auto-gen** for 250 hand-styled samples, then **Start Training** or **Fast Learn**.
 5. The **Acc** figure shows dataset accuracy live.
 
-### 3. X / O Shape Recognition Neural Network - `x-o-recognition-neural-network.html`
-
+### 3. X / O Shape Recognition - [x-o-recognition-neural-network](https://github.com/smartlegionlab/x-o-recognition-neural-network)
 A minimal **64 → 12 → 2** dense network that learns to distinguish the letters **X** and **O** drawn on an 8×8 grid.
 
 **How to use:**
@@ -124,8 +125,7 @@ A minimal **64 → 12 → 2** dense network that learns to distinguish the lette
 2. Repeat **3–5 times per letter**, varying size and position.
 3. Press **Start Training** and draw a new X or O any time - the network replies instantly with a confidence percentage.
 
-### 4. Name Gender Classifier Neural Network - `name-gender-classifier-neural-network.html`
-
+### 4. Name Gender Classifier - [name-gender-classifier-neural-network](https://github.com/smartlegionlab/name-gender-classifier-neural-network)
 A **2,746 → 48 → 1** network that guesses gender from names written in **Russian, English, or transliteration**, using sparse features over a normalized 27-letter alphabet.
 
 **How to use:**
@@ -134,8 +134,7 @@ A **2,746 → 48 → 1** network that guesses gender from names written in **Rus
 3. Add your own names; **Resplit** reshuffles the 80/20 split; **Guess History** records answers.
 4. **Export / Import** saves and loads the trained brain as JSON.
 
-### 5. Chiptune Composer Neural Network - `chiptune-composer-neural-network.html`
-
+### 5. Chiptune Composer - [chiptune-composer-neural-network](https://github.com/smartlegionlab/chiptune-composer-neural-network)
 A **53 → 48 → 12 + rhythm** network that composes 8-bit chiptune live: it predicts the next pitch class and a per-bar rhythm groove, on a native Web Audio engine (no samples), with WAV recording.
 
 **How to use:**
@@ -143,8 +142,7 @@ A **53 → 48 → 12 + rhythm** network that composes 8-bit chiptune live: it pr
 2. Mute the 6 channels individually or all at once.
 3. Record to **.wav**; **Export / Import** saves the composer as JSON.
 
-### 6. RGB Color Name Guesser Neural Network - `rgb-color-name-guesser-neural-network.html`
-
+### 6. RGB Color Name Guesser - [rgb-color-name-guesser-neural-network](https://github.com/smartlegionlab/rgb-color-name-guesser-neural-network)
 A **3 → 24 → 12** network that learns to name any RGB color across 12 classes. The dataset is synthetic: tight clusters around prototype RGB colors, so it reliably trains to ~100% and stops automatically.
 
 **How to use:**
@@ -153,8 +151,7 @@ A **3 → 24 → 12** network that learns to name any RGB color across 12 classe
 3. **Auto-gen** regenerates; **Start Training** / **Fast Learn** trains to 100% and freezes.
 4. Teach it yourself with **+ Save Sample**; **Export / Import** saves the brain as JSON.
 
-### 7. Morse Decoder Neural Network - `morse-decoder-neural-network.html`
-
+### 7. Morse Decoder - [morse-decoder-neural-network](https://github.com/smartlegionlab/morse-decoder-neural-network)
 A **10 → 16 → 36** network that learns the complete **International Morse code** (A-Z and 0-9) and decodes your telegraph key presses live, with realistic **dit** and **dah** sounds and a mechanical key click synthesized by Web Audio.
 
 **How to use:**
@@ -162,8 +159,7 @@ A **10 → 16 → 36** network that learns the complete **International Morse co
 2. **Space** commits the letter into the decoded word; **X** deletes, **C** clears.
 3. **Fast Learn** memorizes all 36 codes to 100% and stops; **Export / Import** saves the brain.
 
-### 8. Tic-Tac-Toe Brain Neural Network - `tic-tac-toe-brain-neural-network.html`
-
+### 8. Tic-Tac-Toe Brain - [tic-tac-toe-brain-neural-network](https://github.com/smartlegionlab/tic-tac-toe-brain-neural-network)
 A **27 → 48 → 32 → 9** policy network with two hidden layers that learns a perfect game of Tic-Tac-Toe. The dataset is every reachable board position (~4,400 non-terminal) labeled by a minimax solver, so each position trains a distribution over all its optimal moves. Training uses a low learning rate (0.02) with gradient clipping and per-epoch weight clipping for stability. Once trained to ~100% the brain **never loses** and blocks every fork.
 
 **How to use:**
@@ -179,7 +175,6 @@ A **27 → 48 → 32 → 9** policy network with two hidden layers that learns a
 ## Model export and import
 
 Every application includes **Export** and **Import** buttons in its network panel:
-
 - **Export** downloads the current network weights (and associated settings) as a JSON file.
 - **Import** loads such a file and applies the weights to the network, so a trained brain can be restored or shared without retraining.
 
@@ -191,5 +186,5 @@ This project is licensed under the **BSD 3-Clause License** - see [LICENSE](LICE
 
 ---
 
-**Author:** Alexander Suvorov · **Repository:** [github.com/smartlegionlab/from-scratch-neural-networks](https://github.com/smartlegionlab/from-scratch-neural-networks)
+**Author:** Alexander Suvorov · **Collection:** [github.com/smartlegionlab/from-scratch-neural-networks](https://github.com/smartlegionlab/from-scratch-neural-networks)
 
