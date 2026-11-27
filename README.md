@@ -48,7 +48,9 @@ All values rendered on screen correspond to the actual state of the network - th
 
 ---
 
-## Applications
+## Ecosystem 
+
+### Applications
 
 | # | Project                       | Repository                                                                                                       | Live demo                                                                                         | Network          | Learns                       |
 |---|-------------------------------|------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------|------------------------------|
@@ -66,14 +68,14 @@ All values rendered on screen correspond to the actual state of the network - th
 ## Screenshots
 
 ![Main Page](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/index.png)
-![Handwritten-Digit Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/digit-recognition-neural-network.png)
-![Boolean-Logic Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/logic-gates-neural-network.png)
-![Name Gender Classifier Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/name-gender-classifier-neural-network.png)
-![X / O Shape Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/x-o-recognition-neural-network.png)
-![RGB Color Name Guesser Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/rgb-color-name-guesser-neural-network.png)
-![Morse Decoder Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/morse-decoder-neural-network.png)
-![Tic-Tac-Toe Brain Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/tic-tac-toe-brain-neural-network.png)
-![Chiptune Composer Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/chiptune-composer-neural-network.png)
+![Handwritten-Digit Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/digit-recognition-neural-network/master/data/images/digit-recognition-neural-network.png)
+![Boolean-Logic Neural Network](https://raw.githubusercontent.com/smartlegionlab/logic-gates-neural-network/master/data/images/logic-gates-neural-network.png)
+![Name Gender Classifier Neural Network](https://raw.githubusercontent.com/smartlegionlab/name-gender-classifier-neural-network/master/data/images/name-gender-classifier-neural-network.png)
+![X / O Shape Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/x-o-recognition-neural-network/master/data/images/x-o-recognition-neural-network.png)
+![RGB Color Name Guesser Neural Network](https://raw.githubusercontent.com/smartlegionlab/rgb-color-name-guesser-neural-network/master/data/images/rgb-color-name-guesser-neural-network.png)
+![Morse Decoder Neural Network](https://raw.githubusercontent.com/smartlegionlab/morse-decoder-neural-network/master/data/images/morse-decoder-neural-network.png)
+![Tic-Tac-Toe Brain Neural Network](https://raw.githubusercontent.com/smartlegionlab/tic-tac-toe-brain-neural-network/master/data/images/tic-tac-toe-brain-neural-network.png)
+![Chiptune Composer Neural Network](https://raw.githubusercontent.com/smartlegionlab/chiptune-composer-neural-network/master/data/images/chiptune-composer-neural-network.png)
 
 ---
 
@@ -175,6 +177,7 @@ A **27 → 48 → 32 → 9** policy network with two hidden layers that learns a
 ## Model export and import
 
 Every application includes **Export** and **Import** buttons in its network panel:
+
 - **Export** downloads the current network weights (and associated settings) as a JSON file.
 - **Import** loads such a file and applies the weights to the network, so a trained brain can be restored or shared without retraining.
 
