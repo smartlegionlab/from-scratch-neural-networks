@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Brain Neural Network</title>
+    <meta name="description" content="Interactive Tic-Tac-Toe Brain Neural Network. A from-scratch MLP (27 -> 48 -> 32 -> 9) in pure JavaScript that learns a perfect policy from every reachable board position and never loses.">
+    <link rel="stylesheet" href="/css/tic-tac-toe-brain-neural-network.css">
+</head>
+<body>
+<header class="site-head">
+    <h1 class="site-title">Tic-Tac-Toe <span class="hi">Neural Network</span><sup class="warn">v1.5</sup></h1>
+    <p class="site-sub">Interactive machine learning. A from-scratch MLP (27 -&gt; 48 -&gt; 32 -&gt; 9) in pure JavaScript
+        that learns a perfect Tic-Tac-Toe policy from every reachable board position - and never loses.</p>
+    <div class="head-btns">
+        <a href="index.html">Back</a>
+        <a href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repo</a>
+        <a href="https://smartlegionlab.github.io/interactive/index.html" target="_blank" rel="noopener">Projects</a>
+        <button type="button" onclick="openModal('helpModal')">? Help</button>
+        <button type="button" onclick="openModal('aboutModal')">About</button>
+    </div>
+</header>
+<div class="workspace">
+    <div class="panel">
+        <h3>1. Play vs the Brain</h3>
+        <div class="side-toggle">
+            <span class="model-lbl">you play</span>
+            <button type="button" class="side-btn active" id="sideX" onclick="setSide(1)">X (first)</button>
+            <button type="button" class="side-btn" id="sideO" onclick="setSide(2)">O (second)</button>
+            <button type="button" class="btn-info" onclick="newGame()">New Game</button>
+        </div>
+        <div class="board" id="board"></div>
+        <div class="status" id="gameStatus">Your turn - X</div>
+        <div class="score" id="scoreLine">You: 0 W / 0 D / 0 L</div>
+        <div class="toast" id="toast"></div>
+        <div class="hint">click an empty cell to place your mark · the brain answers once, then it is your turn</div>
+    </div>
+    <div class="panel">
+        <h3>2. Network Brain (27 → 48 → 32 → 9)</h3>
+        <div class="canvas-area"><canvas id="netCanvas" width="640" height="470"></canvas></div>
+        <div class="btn-group">
+            <button type="button" class="btn-primary" id="trainBtn" onclick="toggleTrain()">Start Training</button>
+            <button type="button" class="btn-green" onclick="trainEpochs(3000)">Fast Learn</button>
+            <button type="button" class="btn-red" onclick="resetNetwork()">Reset</button>
+        </div>
+        <div class="btn-group">
+            <span class="model-lbl">learning rate</span>
+            <button type="button" class="lr-btn" data-lr="0.05" onclick="setLR(0.05,this)">Med</button>
+            <button type="button" class="lr-btn" data-lr="0.1" onclick="setLR(0.1,this)">Fast</button>
+            <button type="button" class="lr-btn active" data-lr="0.02" onclick="setLR(0.02,this)">Precise</button>
+        </div>
+        <div class="btn-group">
+            <span class="model-lbl">optimizer</span>
+            <button type="button" class="opt-btn" data-opt="adam" onclick="setOpt('adam',this)">Adam</button>
+            <button type="button" class="opt-btn active" data-opt="sgd" onclick="setOpt('sgd',this)">SGD</button>
+        </div>
+        <div class="btn-group">
+            <span class="model-lbl">model</span>
+            <button type="button" class="btn-info" onclick="exportModel()">Export</button>
+            <button type="button" class="btn-info" onclick="importModel()">Import</button>
+            <input type="file" id="modelFile" accept="application/json" style="display:none" onchange="onImportFile(event)">
+        </div>
+        <div class="stats" id="trainStats">Epoch: 0 | Loss: - | Policy Acc: 0%</div>
+        <div class="hint">left = 9 cells x (X / O / empty) · two hidden layers · right = the 9 moves</div>
+    </div>
+    <div class="panel">
+        <h3>3. Learning Curve &amp; Policy</h3>
+        <div class="canvas-area"><canvas id="lossCanvas" width="300" height="230"></canvas></div>
+        <div class="stats" id="lossStats">Current: - | Best: -</div>
+        <div class="stats" id="datasetStats">Policy data: 0 minimax positions</div>
+        <div class="hint">green = loss · dashed blue = accuracy · log console (bottom-left) with Copy · it logs every move</div>
+    </div>
+</div>
+<div class="modal-overlay" id="helpModal">
+    <div class="modal">
+        <button type="button" class="modal-close" onclick="closeModal(this)">&#10005;</button>
+        <h3>How to Use</h3>
+        <ol>
+            <li>Pick your side: <b class="accent">X (first)</b> or <b class="accent">O (second)</b>.</li>
+            <li>Click an empty cell - the brain answers once, then the turn returns to you.</li>
+            <li>Press <b class="accent">Fast Learn</b> and let the loss curve fall; each move is logged in the console.</li>
+            <li>Use <b class="accent">Copy</b> in the console (bottom-left) to grab the training and game log.</li>
+            <li>The brain never loses once trained: it blocks forks and always takes the draw at worst.</li>
+            <li><b class="accent">Export / Import</b> saves and loads the trained brain as a JSON file.</li>
+        </ol>
+    </div>
+</div>
+<div class="modal-overlay" id="aboutModal">
+    <div class="modal">
+        <button type="button" class="modal-close" onclick="closeModal(this)">&#10005;</button>
+        <h3>About</h3>
+        <div class="ab-head">
+            <div class="ab-name">Tic-Tac-Toe Brain Neural Network</div>
+            <div class="ab-ver">version 1.5.0</div>
+        </div>
+        <p><b>Tic-Tac-Toe Brain Neural Network</b> is a real multilayer perceptron written from scratch in pure JavaScript: 27 inputs (9 cells, each encoded as X / O / empty) -&gt; 48 sigmoid hidden neurons -&gt; 32 sigmoid hidden neurons -&gt; 9 softmax outputs, one per move.</p>
+        <p><b>Teacher:</b> every reachable board position (~4,400 non-terminal) is labeled by a minimax solver, and each position learns a uniform distribution over all its optimal moves. Loss is cross-entropy + softmax with a low learning rate (0.02), gradient clipping and per-epoch weight clipping to stay stable.</p>
+        <p><b>Result:</b> once trained, the brain responds optimally from any position on either side - you can beat it only by drawing.</p>
+        <p>The bottom-left console logs the training (epoch, loss, policy accuracy, forced-win accuracy) and the game (each move with its top-3 candidates) - copy it to debug any issue.</p>
+        <div class="ab-meta">
+            <div><b>Author:</b> Alexander Suvorov</div>
+            <div><b>License:</b> BSD 3-Clause</div>
+            <div><b>Repository:</b> <a href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">github.com/smartlegionlab/from-scratch-neural-networks</a></div>
+        </div>
+    </div>
+</div>
+<footer class="site-foot">
+    <p>&#169; 2026 <a href="https://github.com/smartlegionlab" target="_blank" rel="noopener">Smart Legion Lab</a> |
+        <a href="https://github.com/smartlegionlab/from-scratch-neural-networks" target="_blank" rel="noopener">Repository</a> |
+        <a href="https://smartlegionlab.github.io/interactive/tic-tac-toe-brain-neural-network.html" target="_blank" rel="noopener">Site</a></p>
+</footer>
+<script src="/js/tic-tac-toe-brain-neural-network.js"></script>
+</body>
+</html>
