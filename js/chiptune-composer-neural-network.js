@@ -323,6 +323,22 @@ var netCanvas=document.getElementById('netCanvas'), nCtx=netCanvas.getContext('2
 var lossCanvas=document.getElementById('lossCanvas'), lCtx=lossCanvas.getContext('2d');
 var trackCanvas=document.getElementById('trackCanvas'), tCtx=trackCanvas.getContext('2d');
 var distCanvas=document.getElementById('distCanvas'), dCtx=distCanvas?distCanvas.getContext('2d'):null;
+var DPR = window.devicePixelRatio || 1;
+var NET_W = netCanvas.width, NET_H = netCanvas.height;
+var fitTimer = 0;
+function fitCanvases() {
+  var r;
+  netCanvas.width = Math.round(NET_W * DPR);
+  netCanvas.height = Math.round(NET_H * DPR);
+  nCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  r = trackCanvas.getBoundingClientRect();
+  if (r.width > 0) { trackCanvas.width = Math.round(r.width * DPR); trackCanvas.height = Math.round(r.width * 220 / 620 * DPR); }
+  r = lossCanvas.getBoundingClientRect();
+  if (r.width > 0) { lossCanvas.width = Math.round(r.width * DPR); lossCanvas.height = Math.round(r.width * 170 / 300 * DPR); }
+  r = distCanvas.getBoundingClientRect();
+  if (r.width > 0) { distCanvas.width = Math.round(r.width * DPR); distCanvas.height = Math.round(r.width * 120 / 300 * DPR); }
+}
+window.addEventListener('resize', function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitCanvases, 60); });
 var barsWrap=document.getElementById('barsWrap'), barEls=[];
 (function(){ for(var i=0;i<6;i++){ var d=document.createElement('div'); d.className='bar'; d.setAttribute('data-ch',i); d.innerHTML='<i></i>'; barsWrap.appendChild(d); } barEls=Array.prototype.slice.call(barsWrap.children); })();
 var barAct=[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]];
@@ -332,11 +348,11 @@ function drawSynapse(a,b,w,pos,neg,maxW,wMax){ nCtx.beginPath(); nCtx.moveTo(a.x
 function drawOrb(x,y,v,baseR,phase,col){ if(!isFinite(v)) v=0; var a=Math.max(0,Math.min(1,v)); var pulse=1+0.1*Math.sin(anim*3.4+phase); var rad=Math.max(2,baseR*(0.6+0.85*a)*pulse); if(!isFinite(rad)) rad=baseR; var halo=rad*2.9,g; g=nCtx.createRadialGradient(x,y,rad*0.2,x,y,halo); g.addColorStop(0,rgba(col[0],col[1],col[2],0.4*a)); g.addColorStop(0.6,rgba(col[0],col[1],col[2],0.12*a)); g.addColorStop(1,rgba(col[0],col[1],col[2],0)); nCtx.fillStyle=g; nCtx.beginPath(); nCtx.arc(x,y,halo,0,Math.PI*2); nCtx.fill(); g=nCtx.createRadialGradient(x-rad*0.35,y-rad*0.4,rad*0.1,x,y,rad); g.addColorStop(0,'rgba(255,255,255,0.95)'); g.addColorStop(0.38,rgba(Math.min(255,col[0]+80),Math.min(255,col[1]+80),Math.min(255,col[2]+80),0.95)); g.addColorStop(1,rgba(col[0],col[1],col[2],0.6)); nCtx.fillStyle=g; nCtx.beginPath(); nCtx.arc(x,y,rad,0,Math.PI*2); nCtx.fill(); nCtx.beginPath(); nCtx.arc(x,y,rad*1.16,0,Math.PI*2); nCtx.strokeStyle=rgba(col[0],col[1],col[2],0.3+0.55*a); nCtx.lineWidth=1+1.4*a; nCtx.stroke(); }
 function drawOutputOrb(x,y,v,baseR,phase,col,winner){ if(!isFinite(v)) v=0; var a=Math.max(0,Math.min(1,v)); var pulse=1+0.1*Math.sin(anim*2.8+phase*1.1)+(winner?0.1*Math.sin(anim*7):0); var rad=baseR*(0.55+0.6*a)*pulse; if(!isFinite(rad)) rad=baseR; var halo=rad*2.1,g; g=nCtx.createRadialGradient(x,y,rad*0.2,x,y,halo); g.addColorStop(0,rgba(col[0],col[1],col[2],0.32*a)); g.addColorStop(1,rgba(col[0],col[1],col[2],0)); nCtx.fillStyle=g; nCtx.beginPath(); nCtx.arc(x,y,halo,0,Math.PI*2); nCtx.fill(); g=nCtx.createRadialGradient(x-rad*0.32,y-rad*0.38,rad*0.1,x,y,rad); g.addColorStop(0,rgba(255,255,255,0.3+0.4*a)); g.addColorStop(0.5,rgba(col[0],col[1],col[2],0.3+0.55*a)); g.addColorStop(1,rgba(col[0],col[1],col[2],0.2+0.45*a)); nCtx.fillStyle=g; nCtx.beginPath(); nCtx.arc(x,y,rad,0,Math.PI*2); nCtx.fill(); nCtx.beginPath(); nCtx.arc(x,y,rad*1.1,0,Math.PI*2); nCtx.strokeStyle=rgba(col[0],col[1],col[2],0.25+0.6*a); nCtx.lineWidth=1+1.6*a; nCtx.stroke(); if(winner){ var wr=rad*1.34+2.5*Math.sin(anim*5); nCtx.beginPath(); nCtx.arc(x,y,wr,0,Math.PI*2); nCtx.strokeStyle=rgba(0,230,118,0.45+0.3*Math.sin(anim*5)); nCtx.lineWidth=2; nCtx.stroke(); } }
 function drawNetwork(){
-  nCtx.clearRect(0,0,netCanvas.width,netCanvas.height);
+  nCtx.clearRect(0,0,NET_W,NET_H);
   var isMobile=window.innerWidth<=BREAKPOINT, cols=14, rows=4, cell=isMobile?16:19, gap=3, gx0=24, gy0=66, inPts=[];
   for(var r=0;r<rows;r++) for(var c=0;c<cols;c++){ var idx=r*cols+c; if(idx>=IN) break; inPts.push({x:gx0+c*(cell+gap),y:gy0+r*(cell+gap),act:nn.lastIn[idx]}); }
-  var hidX=gx0+cols*(cell+gap)+32, hidStep=netCanvas.height/(HID+1), hidY=[]; for(var i=0;i<HID;i++) hidY.push(hidStep*(i+1));
-  var outX=hidX+150, outStep=netCanvas.height/(OUT+1), wMax=0.001;
+  var hidX=gx0+cols*(cell+gap)+32, hidStep=NET_H/(HID+1), hidY=[]; for(var i=0;i<HID;i++) hidY.push(hidStep*(i+1));
+  var outX=hidX+150, outStep=NET_H/(OUT+1), wMax=0.001;
   for(var i=0;i<HID;i++) for(var j=0;j<IN;j++){ var aw=Math.abs(nn.wIH[i][j]); if(aw>wMax) wMax=aw; }
   for(var k=0;k<OUT;k++) for(var j=0;j<HID;j++){ var aw2=Math.abs(nn.wHO[k][j]); if(aw2>wMax) wMax=aw2; }
   for(var i=0;i<HID;i++) for(var j=0;j<inPts.length;j++) drawSynapse({x:inPts[j].x+cell/2,y:inPts[j].y+cell/2},{x:hidX,y:hidY[i]},nn.wIH[i][j],'rgba(0,210,255,0.14)','rgba(255,82,82,0.14)',1.8,wMax);
@@ -452,4 +468,5 @@ function loop(){ anim=performance.now()/1000; if(isTraining) trainOneEpoch(); ac
 function startupTrain(){ genData(); log('init: arch=53-48-12+rhy key='+TONIC+' opt='+nn.opt+' lr='+nn.lr); function step(){ for(var e=0;e<2&&epoch<RUN_EPOCHS;e++) trainOneEpoch(); updateStats(); if(epoch<RUN_EPOCHS) setTimeout(step,0); } setTimeout(step,0); }
 updateRecUI();
 startupTrain();
+fitCanvases();
 loop();
