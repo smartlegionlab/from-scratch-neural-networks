@@ -33,10 +33,11 @@ The entry point for all applications is the `index.html` gallery page.
 - **Networks trained from scratch** in plain JavaScript (sigmoid activation, backpropagation, mini-batch SGD; the Boolean, Chiptune, RGB Color, Morse and Tic-Tac-Toe apps also offer Adam as an optimizer).
 - **Interactive input** - draw, type, flip values, press a telegraph key, play a board game, and watch predictions update live.
 - **Live visualization** - neurons are rendered as pulsing orbs whose brightness reflects activation; synapse lines show the sign and relative magnitude of weights; loss graphs and decision maps reflect the real training dynamics.
-- **Policy learning** - the Tic-Tac-Toe app learns a perfect policy from every reachable position labeled by a minimax teacher and never loses.
+- **Policy learning** - the Tic-Tac-Toe app (27 → 48 → 32 → 9) learns a perfect policy from every reachable position labeled by a minimax teacher and never loses.
 - **Multi-head output** - the Chiptune app predicts both the next pitch class and a per-bar rhythm groove.
 - **Audio** - a native Web Audio API engine (no samples) for chiptune with WAV recording, and realistic synthesized telegraph key sounds (dit, dah, key click) for the Morse app.
-- **Auto-stop at 100%** - the Boolean, RGB Color, Morse and Tic-Tac-Toe apps freeze the weights the moment training reaches the target, so the result stays stable.
+- **Debug console** - the Tic-Tac-Toe app logs live training diagnostics (loss, policy accuracy, forced-win accuracy) and every move with its top-3 candidates, with one-click copy.
+- **Auto-stop at the learning target** - the Boolean, RGB Color, Morse and Tic-Tac-Toe apps freeze the weights the moment training reaches the target, so the result stays stable.
 - **Model persistence** - every app can export its trained weights to a JSON file and import them back, so trained models can be saved, shared, or reused without retraining.
 - **Responsive layout** - the interfaces adapt for desktop, tablet, and mobile, including touch input.
 - **Built-in Help and About dialogs** in every application.
@@ -45,16 +46,16 @@ The entry point for all applications is the `index.html` gallery page.
 
 ## Applications
 
-| # | File (repo)                                                                              | Live demo                                                                                         | App                                          | Network        | Learns                       |
-|---|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------|----------------|------------------------------|
-| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interactive/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1      | XOR / AND / OR / NAND / XNOR |
-| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10  | Handwritten digits 0-9       |
-| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
-| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
-| 5 | [chiptune-composer-neural-network.html](chiptune-composer-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/chiptune-composer-neural-network.html)      | Chiptune Composer Neural Network             | 53 → 48 → 12+r | Compose 8-bit chiptune live  |
-| 6 | [rgb-color-name-guesser-neural-network.html](rgb-color-name-guesser-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/rgb-color-name-guesser-neural-network.html) | RGB Color Name Guesser Neural Network        | 3 → 24 → 12    | Names any RGB color          |
-| 7 | [morse-decoder-neural-network.html](morse-decoder-neural-network.html)                   | [try it](https://smartlegionlab.github.io/interactive/morse-decoder-neural-network.html)          | Morse Decoder Neural Network                 | 10 → 16 → 36   | Morse code A-Z and 0-9       |
-| 8 | [tic-tac-toe-brain-neural-network.html](tic-tac-toe-brain-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/tic-tac-toe-brain-neural-network.html)      | Tic-Tac-Toe Brain Neural Network             | 27 → 24 → 9    | Perfect Tic-Tac-Toe play     |
+| # | File (repo)                                                                              | Live demo                                                                                         | App                                          | Network          | Learns                       |
+|---|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------|------------------|------------------------------|
+| 1 | [logic-gates-neural-network.html](logic-gates-neural-network.html)                       | [try it](https://smartlegionlab.github.io/interactive/logic-gates-neural-network.html)            | Boolean-Logic Neural Network                 | 2 → 3 → 1        | XOR / AND / OR / NAND / XNOR |
+| 2 | [digit-recognition-neural-network.html](digit-recognition-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/digit-recognition-neural-network.html)      | Handwritten-Digit Recognition Neural Network | 144 → 24 → 10    | Handwritten digits 0-9       |
+| 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2      | The letters X and O          |
+| 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1   | Gender from RU/EN names      |
+| 5 | [chiptune-composer-neural-network.html](chiptune-composer-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/chiptune-composer-neural-network.html)      | Chiptune Composer Neural Network             | 53 → 48 → 12+r   | Compose 8-bit chiptune live  |
+| 6 | [rgb-color-name-guesser-neural-network.html](rgb-color-name-guesser-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/rgb-color-name-guesser-neural-network.html) | RGB Color Name Guesser Neural Network        | 3 → 24 → 12      | Names any RGB color          |
+| 7 | [morse-decoder-neural-network.html](morse-decoder-neural-network.html)                   | [try it](https://smartlegionlab.github.io/interactive/morse-decoder-neural-network.html)          | Morse Decoder Neural Network                 | 10 → 16 → 36     | Morse code A-Z and 0-9       |
+| 8 | [tic-tac-toe-brain-neural-network.html](tic-tac-toe-brain-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/tic-tac-toe-brain-neural-network.html)      | Tic-Tac-Toe Brain Neural Network             | 27 → 48 → 32 → 9 | Perfect Tic-Tac-Toe play     |
 
 ---
 
@@ -163,14 +164,15 @@ A **10 → 16 → 36** network that learns the complete **International Morse co
 
 ### 8. Tic-Tac-Toe Brain Neural Network - `tic-tac-toe-brain-neural-network.html`
 
-A **27 → 24 → 9** policy network that learns a perfect game of Tic-Tac-Toe. The dataset is every reachable board position (~4,400 non-terminal) labeled by a minimax solver, so each target is a winning-or-drawing move. Once trained to ~100% the brain **never loses** and blocks every fork.
+A **27 → 48 → 32 → 9** policy network with two hidden layers that learns a perfect game of Tic-Tac-Toe. The dataset is every reachable board position (~4,400 non-terminal) labeled by a minimax solver, so each position trains a distribution over all its optimal moves. Training uses a low learning rate (0.02) with gradient clipping and per-epoch weight clipping for stability. Once trained to ~100% the brain **never loses** and blocks every fork.
 
 **How to use:**
 1. Pick your side: **X (first)** or **O (second)**.
-2. Click an empty cell - the brain answers on the other side.
+2. Click an empty cell - the brain answers once, then the turn returns to you.
 3. Before training it plays randomly; after **Fast Learn** it plays perfectly.
 4. The right grid in the network view ranks all 9 moves for the current board.
-5. **Export / Import** saves and loads the trained brain as JSON.
+5. The bottom-left console logs live training diagnostics and every move with its top-3 candidates - press **Copy** to share the log.
+6. **Export / Import** saves and loads the trained brain as JSON.
 
 ---
 

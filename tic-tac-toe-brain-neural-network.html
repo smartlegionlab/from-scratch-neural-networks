@@ -91,7 +91,7 @@
         <h3>About</h3>
         <div class="ab-head">
             <div class="ab-name">Tic-Tac-Toe Brain Neural Network</div>
-            <div class="ab-ver">version 1.5.0</div>
+            <div class="ab-ver">version 1.3.2</div>
         </div>
         <p><b>Tic-Tac-Toe Brain Neural Network</b> is a real multilayer perceptron written from scratch in pure JavaScript: 27 inputs (9 cells, each encoded as X / O / empty) -&gt; 48 sigmoid hidden neurons -&gt; 32 sigmoid hidden neurons -&gt; 9 softmax outputs, one per move.</p>
         <p><b>Teacher:</b> every reachable board position (~4,400 non-terminal) is labeled by a minimax solver, and each position learns a uniform distribution over all its optimal moves. Loss is cross-entropy + softmax with a low learning rate (0.02), gradient clipping and per-epoch weight clipping to stay stable.</p>
