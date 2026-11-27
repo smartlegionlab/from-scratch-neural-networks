@@ -42,24 +42,15 @@
         </div>
         <button type="button" class="btn btn-primary btn-block" id="muteAllBtn" onclick="toggleMaster()">Mute All</button>
         <div class="slider">
-            <label>Key / Tonality <b id="keyName">A Minor</b></label>
+            <label>Key / Tonality <b id="keyName">A minor</b></label>
             <select id="keySelect" onchange="setKey(+this.value)">
-                <option value="9">A</option>
-                <option value="0">C</option>
-                <option value="2">D</option>
-                <option value="4">E</option>
-                <option value="5">F</option>
-                <option value="7">G</option>
+                <option value="9">A minor</option>
+                <option value="0">C minor</option>
+                <option value="2">D minor</option>
+                <option value="4">E minor</option>
+                <option value="5">F minor</option>
+                <option value="7">G minor</option>
             </select>
-        </div>
-        <div class="slider">
-            <label>Mode <b id="modeName">Minor</b></label>
-            <div class="btn-group">
-                <button type="button" class="mode-btn active" data-mode="minor" onclick="setMode('minor',this)">Minor</button>
-                <button type="button" class="mode-btn" data-mode="harmonic" onclick="setMode('harmonic',this)">Harmonic</button>
-                <button type="button" class="mode-btn" data-mode="phrygian" onclick="setMode('phrygian',this)">Phrygian</button>
-                <button type="button" class="mode-btn" data-mode="dark" onclick="setMode('dark',this)">Dark</button>
-            </div>
         </div>
         <div class="slider">
             <label>Tempo (BPM) <b id="bpmVal">80</b></label>
@@ -136,7 +127,7 @@
         <h3>3. Learning Curve &amp; Watch</h3>
         <div class="canvas-area"><canvas id="lossCanvas" width="300" height="170"></canvas></div>
         <div class="status-box" id="statusBox">
-            <div class="s-row"><span>Key</span><b id="sKey">A Minor</b></div>
+            <div class="s-row"><span>Key</span><b id="sKey">A minor</b></div>
             <div class="s-row"><span>Bar / Groove</span><b id="sBar">-</b></div>
             <div class="s-row"><span>Chord</span><b id="sChord">-</b></div>
             <div class="s-row"><span>Lead / Bass</span><b id="sNotes">-</b></div>
@@ -156,7 +147,7 @@
             <li><b class="accent">Play</b> unlocks Audio and starts live composition.</li>
             <li>Record: <b class="accent">REC</b> - <b class="accent">Stop</b> - <b class="accent">Download</b> (.wav); <b class="accent">Reset</b> clears.</li>
             <li><b class="accent">Master Volume</b> and <b class="accent">Mute All / Unmute All</b>; each channel has its own Mute.</li>
-            <li>Key and Mode (Minor / Harmonic Minor / Phrygian / Dark), Tempo (40+), Temperature, Lead Density, Model influence, Echo.</li>
+            <li>Key, Tempo (40+), Temperature, Lead Density, Model influence, Echo.</li>
             <li>The network picks the melody and a per-bar rhythm groove for bass + drums.</li>
             <li><b class="accent">Copy Stats</b> / <b class="accent">Export / Import</b>.</li>
         </ol>
@@ -167,10 +158,9 @@
     <div class="modal">
         <button type="button" class="modal-close" onclick="closeModal(this)">&#10005;</button>
         <h3>About</h3>
-        <div class="ab-head"><div class="ab-name">Chiptune Composer Neural Network</div><div class="ab-ver">version 1.3.0</div></div>
+        <div class="ab-head"><div class="ab-name">Chiptune Composer Neural Network</div><div class="ab-ver">version 1.2.0</div></div>
         <p>A from-scratch MLP (53 -&gt; 48 -&gt; 12 + rhythm) in pure JavaScript. No libraries, no samples.</p>
         <p>The network has two shared-hidden heads: it predicts the next pitch class and, per bar, one of four rhythm grooves for bass + drums. Trained by mini-batch SGD / Adam with cross-entropy, weight decay and clipping. Melody is locked to the chosen key / scale.</p>
-        <p>Several dark tonal modes are available: Minor (default), Harmonic Minor, Phrygian and Dark. Minor is the default and keeps the exact original sound; the other modes shift the scale for a darker, more exotic character. Every mode stays in a minor key.</p>
         <p>An educational demo of live music generation: every note is synthesized in the browser with the Web Audio API, and the piece stays in key and follows a chord progression. Records to 16-bit PCM .wav.</p>
         <div class="ab-meta">
             <div><b>Author:</b> Alexander Suvorov</div>
