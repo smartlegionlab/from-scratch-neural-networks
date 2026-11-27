@@ -20,21 +20,24 @@ A collection of real multilayer perceptrons (MLPs) implemented **from scratch in
 
 ## Overview
 
-This repository contains **five** independent, ready-to-run applications. Each one implements a complete training pipeline by hand: the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side, so no build step is required.
+This repository contains **seven** independent, ready-to-run applications. Each one implements a complete training pipeline by hand: the forward pass, error backpropagation, and weight updates with gradient descent. Everything runs client-side, so no build step is required.
 
-The apps are designed as an educational demonstration: they show, in real time, how a small network reorganizes its weights to solve a specific problem. All values rendered on screen correspond to the actual state of the network. The entry point for all applications is the *`index.html`* gallery page.
+The apps are designed as an educational demonstration: they show, in real time, how a small network reorganizes its weights to solve a specific problem. All values rendered on screen correspond to the actual state of the network.
+
+The entry point for all applications is the `index.html` gallery page.
 
 ---
 
 ## Feature summary
 
-- **Networks trained from scratch** in plain JavaScript (sigmoid activation, backpropagation, mini-batch SGD; the Boolean and Chiptune apps also offer Adam as an optimizer).
-- **Interactive input** - draw, type, or flip values and watch predictions update live.
+- **Networks trained from scratch** in plain JavaScript (sigmoid activation, backpropagation, mini-batch SGD; the Boolean, Chiptune, RGB Color and Morse apps also offer Adam as an optimizer).
+- **Interactive input** - draw, type, flip values, press a telegraph key, and watch predictions update live.
 - **Live visualization** - neurons are rendered as pulsing orbs whose brightness reflects activation; synapse lines show the sign and relative magnitude of weights; loss graphs and decision maps reflect the real training dynamics.
 - **Multi-head output** - the Chiptune app predicts both the next pitch class and a per-bar rhythm groove.
-- **Audio** - a native Web Audio API engine (no samples) with WAV recording in the browser.
+- **Audio** - a native Web Audio API engine (no samples) for chiptune with WAV recording, and realistic synthesized telegraph key sounds (dit, dah, key click) for the Morse app.
+- **Auto-stop at 100%** - the Boolean, RGB Color and Morse apps freeze the weights the moment training reaches 100%, so the result stays stable.
 - **Model persistence** - every app can export its trained weights to a JSON file and import them back, so trained models can be saved, shared, or reused without retraining.
-- **Responsive layout** - the interfaces adapt for desktop, tablet, and mobile, including touch drawing.
+- **Responsive layout** - the interfaces adapt for desktop, tablet, and mobile, including touch input.
 - **Built-in Help and About dialogs** in every application.
 
 ---
@@ -48,6 +51,8 @@ The apps are designed as an educational demonstration: they show, in real time, 
 | 3 | [x-o-recognition-neural-network.html](x-o-recognition-neural-network.html)               | [try it](https://smartlegionlab.github.io/interactive/x-o-recognition-neural-network.html)        | X / O Shape Recognition Neural Network       | 64 → 12 → 2    | The letters X and O          |
 | 4 | [name-gender-classifier-neural-network.html](name-gender-classifier-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/name-gender-classifier-neural-network.html) | Name Gender Classifier Neural Network        | 2,746 → 48 → 1 | Gender from RU/EN names      |
 | 5 | [chiptune-composer-neural-network.html](chiptune-composer-neural-network.html)           | [try it](https://smartlegionlab.github.io/interactive/chiptune-composer-neural-network.html)      | Chiptune Composer Neural Network             | 53 → 48 → 12+r | Compose 8-bit chiptune live  |
+| 6 | [rgb-color-name-guesser-neural-network.html](rgb-color-name-guesser-neural-network.html) | [try it](https://smartlegionlab.github.io/interactive/rgb-color-name-guesser-neural-network.html) | RGB Color Name Guesser Neural Network        | 3 → 24 → 12    | Names any RGB color          |
+| 7 | [morse-decoder-neural-network.html](morse-decoder-neural-network.html)                   | [try it](https://smartlegionlab.github.io/interactive/morse-decoder-neural-network.html)          | Morse Decoder Neural Network                 | 10 → 16 → 36   | Morse code A-Z and 0-9       |
 
 ---
 
@@ -58,6 +63,8 @@ The apps are designed as an educational demonstration: they show, in real time, 
 ![Boolean-Logic Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/logic-gates-neural-network.png)
 ![Name Gender Classifier Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/name-gender-classifier-neural-network.png)
 ![X / O Shape Recognition Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/x-o-recognition-neural-network.png)
+![RGB Color Name Guesser Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/rgb-color-name-guesser-neural-network.png)
+![Morse Decoder Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/morse-decoder-neural-network.png)
 ![Chiptune Composer Neural Network](https://raw.githubusercontent.com/smartlegionlab/from-scratch-neural-networks/master/data/images/chiptune-composer-neural-network.png)
 
 ---
@@ -66,7 +73,7 @@ The apps are designed as an educational demonstration: they show, in real time, 
 
 ### Run with a local server
 
-The applications are **no longer single-file**. Each app is split into an HTML file, a stylesheet `css/`) and a script `js/`), and the gallery page `index.html`) loads screenshots from `data/images/`. Because of this, **opening the HTML files directly by double-click will not work** - you must serve the folder over HTTP:
+The applications are **no longer single-file**. Each app is split into an HTML file, a stylesheet (`css/`) and a script (`js/`), and the gallery page `index.html` loads screenshots from `data/images/`. Because of this, **opening the HTML files directly by double-click will not work** - you must serve the folder over HTTP:
 
 ```bash
 python -m http.server 8000
@@ -103,9 +110,7 @@ A **144 → 24 → 10** network (12×12 grayscale input grid → 24 hidden neuro
 3. Press **✓ Save** to add the sample to the dataset (the grid clears automatically).
 4. Erase mistakes with the **Eraser** button, the **E** key, or by holding the **right mouse button**.
 5. Press **Auto-gen** to add 250 hand-styled samples (25 per digit) generated with random rotation, scale, shear, offset, bends, wobble, pen-lift gaps, and variable stroke thickness.
-6. Press **Start Training** or **Fast Learn**. The **Acc** figure shows the percentage of the dataset answered correctly in real time.
-
-While training, the network shows its guess for whatever is currently drawn, along with a confidence bar and per-class percentages.
+6. Press **Start Training** or **Fast Learn**. The **Acc** figure shows the percentage of the dataset answered correctly in real time. While training, the network shows its guess for whatever is currently drawn, along with a confidence bar and per-class percentages.
 
 ### 3. X / O Shape Recognition Neural Network - `x-o-recognition-neural-network.html`
 
@@ -138,27 +143,50 @@ The input orbs indicate **connection strength**: the brighter a letter or suffix
 
 A **53 → 48 → 12 + rhythm** network that composes 8-bit chiptune live - retro chip-music that imitates a classic 8-bit synthesizer: a bright square-wave lead, an arpeggio, a moving bass and a small drum kit. It has two output heads on one shared hidden layer: it predicts the next pitch class for the melody and, per bar, one of four rhythm grooves that drive the bass and drums. Trained by mini-batch SGD / Adam with cross-entropy, weight decay and clipping.
 
-**What it is:** an educational demo that shows a small MLP composing music in real time entirely in the browser, with no audio samples - every note is synthesized live with the Web Audio API.
-
-**Why:** to demonstrate live generation: a network learns musical patterns and composes an endless, non-repeating piece that stays in key and follows a chord progression.
-
-**How it works:** a hybrid. A hand-written harmony grammar (chord tones, stepwise motion, and a ii - V7 - i progression that resolves to the tonic) guarantees the music always sounds coherent, while the MLP learns to imitate that same material and shapes it. Each next pitch is sampled from a blend of the template and the network, locked to the chosen key / scale.
-
 **How to use:**
 1. Press **Play** - the browser unlocks Audio and starts live composition.
-2. Pick a **Key** (A / C / D / E / F / G minor), **Tempo** (40+), **Temperature**, **Lead Density** (how often the lead changes note), **Model influence**, **Echo**.
-3. **Master Volume** and **Mute All / Unmute All** control the sound; each of the 6 channels (Lead, Arp, Bass, Drums, Lead 2, Pad) has its own Mute.
-4. Record to a 16-bit PCM **.wav**: **REC** → **Stop** → **Download**; **Reset** clears.
-5. Watch the **loss curve**, the live composer status (key / bar / groove / chord / notes) and the network output distribution.
-6. **Copy Stats** copies Epoch / Loss / Top3; **Export / Import** saves and loads the trained composer as JSON.
+2. Pick a **Key** (A / C / D / E / F / G minor), **Tempo** (40+), **Temperature**, **Lead Density**, **Model influence**, **Echo**.
+3. **Master Volume** and **Mute All / Unmute All** control the sound; each of the 6 channels has its own Mute.
+4. Record to a 16-bit PCM **.wav**: **REC** → **Stop** → **Download**.
+5. Watch the **loss curve**, the live composer status and the network output distribution.
+6. **Copy Stats** / **Export / Import** saves and loads the trained composer as JSON.
 
-**Engine:** 6 channels - a square lead with a dotted-eighth feedback delay + lowpass, a square arpeggio, a moving triangle bass, a noise drum kit (kick / snare / hi-hat) driven by the network-chosen groove, a second lead an octave down, and a sustained triangle pad holding the chord.
+**Engine:** 6 channels - a square lead with feedback delay + lowpass, a square arpeggio, a moving triangle bass, a noise drum kit, a second lead an octave down, and a sustained triangle pad.
+
+### 6. RGB Color Name Guesser Neural Network - `rgb-color-name-guesser-neural-network.html`
+
+A **3 → 24 → 12** network that learns to name any RGB color across 12 classes (red, orange, yellow, green, cyan, blue, purple, pink, brown, gray, black, white). The dataset is synthetic: each class is a tight cluster of samples around its prototype RGB, so the classes are realistic yet separable, and the net reliably trains to ~100% and stops automatically.
+
+**How to use:**
+1. The dataset is generated automatically on load (~2,000 colors across 12 classes).
+2. Move the **R, G, B** sliders - the network names the color with a confidence percentage.
+3. **Auto-gen** regenerates the dataset; **Start Training** or **Fast Learn** trains it to 100% and freezes.
+4. Teach the network yourself: pick a color chip below the sliders, then press **+ Save Sample**.
+5. **Random** throws a random color; try colors that sit between classes (teal, lime, navy).
+6. **Export / Import** saves and loads the trained brain as a JSON file.
+
+The right-hand panel shows the **loss curve**, the live accuracy and per-color confidence bars. In the network view the three input orbs glow with the actual power of the R, G, B channels, and the 12 output orbs are painted in the real colors they stand for.
+
+### 7. Morse Decoder Neural Network - `morse-decoder-neural-network.html`
+
+A **10 → 16 → 36** network that learns the complete **International Morse code** (A-Z and 0-9) and decodes your telegraph key presses live. Each Morse slot is encoded as a dot/dash pair (10 inputs for 5 slots), and the 36 outputs are the letters and digits. Trained by cross-entropy with softmax; the deterministic table trains to 100% in seconds and stops automatically.
+
+**Sound:** the key behaves like a real telegraph key - a native Web Audio engine synthesizes the **dit** (~75 ms), the **dah** (~220 ms) and a mechanical key **click** on every press. No samples, everything generated live.
+
+**How to use:**
+1. Press the big **dot .** and **dash -** keys (or keyboard **A** / **S**) - each press makes a real telegraph sound.
+2. The network guesses the letter live, with the top 3 candidates and a Morse reference table in panel 3.
+3. Press **Space** (or the space bar) to commit the current code into the decoded word.
+4. **X** deletes the last symbol, **C** clears everything.
+5. Press **Fast Learn** - the net memorizes all 36 codes to 100% and stops.
+6. **Export / Import** saves and loads the trained brain as a JSON file.
 
 ---
 
 ## Model export and import
 
 Every application includes **Export** and **Import** buttons in its network panel:
+
 - **Export** downloads the current network weights (and associated settings) as a JSON file.
 - **Import** loads such a file and applies the weights to the network, so a trained brain can be restored or shared without retraining.
 
